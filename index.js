@@ -24,16 +24,6 @@ let persons = [
       "name": "Mary Poppendieck", 
       "number": "39-23-6423122"
     },
-    {
-      "id" : "5",
-      "name" : "Angie Flores Hernandez",
-      "number" : "621190719",
-    },
-    {
-      "id" : "6",
-      "name" : "Nikko Bolanos",
-      "number" : "210-980-8018"
-    },
 ]
 
 morgan.token('body', (req, res) => {
