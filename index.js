@@ -44,10 +44,8 @@ const generateId = () => {
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
-  if (!body.content) {
-    return response.status(400).json({
-      error: 'content missing',
-    })
+  if(!body) {
+    return response.status(400).json({ error: 'content FU!' })
   }
 
   const person = new Person({
@@ -55,15 +53,15 @@ app.post('/api/persons', (request, response) => {
     number: body.number,
   })
 
-  const unique = Person.findById(request.params.id).then(p => p.id === person.id ? false : true)
+  /*const unique = Person.findById(request.params.id).then(p => p.id === person.id ? false : true)
 
   if(!unique) {
     return response.status(400).json({
       error: 'Name is not unique'
     })
-  }
+  }*/
 
-  person.save().then(savedPerson => {
+  person.save().then((savedPerson) => {
     response.json(savedPerson)
   })
 })

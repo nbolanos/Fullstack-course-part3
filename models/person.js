@@ -20,10 +20,10 @@ mongoose.connect(url)
     })
 
     personSchema.set('toJSON', {
-        transform: (document, requestedObject) => {
-            requestedObject.id = requestedObject._id
-            delete requestedObject._id
-            delete requestedObject.__v
+        transform: (document, returnedObject) => {
+            returnedObject.id = returnedObject._id.toString()
+            delete returnedObject._id
+            delete returnedObject.__v
         }
     })
 
