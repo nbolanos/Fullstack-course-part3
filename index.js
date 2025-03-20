@@ -34,13 +34,6 @@ app.get('/info', (request, response) => {
   response.send(message)
 })
 
-app.delete('/api/persons/:id', (request, response) => {
-  const id = request.params.id
-  persons = persons.filter(person => person.id !== id)
-
-  response.status(204).end()
-})
-
 const generateId = () => {
   const maxId = persons.length > 0 
   ? Math.floor(Math.random() * 10000)
@@ -57,13 +50,12 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: generateId(),
-  }
+  })
 
-  const unique = persons.find(p => p.name === person.name) ? false : true
+  const unique = Person.findById(request.params.id).then(p => p.id === person.id ? false : true)
 
   if(!unique) {
     return response.status(400).json({
@@ -71,9 +63,16 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  persons = persons.concat(person)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
+})
 
-  response.json(person)
+app.delete('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  persons = persons.filter(person => person.id !== id)
+
+  response.status(204).end()
 })
 
 const PORT = process.env.PORT
