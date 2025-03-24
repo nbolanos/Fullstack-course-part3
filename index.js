@@ -7,7 +7,7 @@ const app = express()
 
 //let persons = []
 
-morgan.token('body', (req, res) => {
+morgan.token('body', (req) => {
   return JSON.stringify(req.body)
 })
 
@@ -43,19 +43,19 @@ app.get('/api/persons/:id', (request, response, next) => {
       response.status(404).end()
     }
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.get('/info', (request, response) => {
   const currentDate = new Date()
-  
+
   Person.find({}).then(result => {
     response.send(`<p>Phonebook has info for ${result.length} people</p>\n${currentDate}`)
   })
 })
 
 /*const generateId = () => {
-  const maxId = persons.length > 0 
+  const maxId = persons.length > 0
   ? Math.floor(Math.random() * 10000)
   : 0
   return String(maxId)
@@ -85,9 +85,9 @@ app.post('/api/persons', (request, response, next) => {
   person.save().then((savedPerson) => {
     response.json(savedPerson)
   })
-  .catch(error => {
-    next(error)
-  })
+    .catch(error => {
+      next(error)
+    })
 })
 
 //Update matching person to DB
@@ -96,20 +96,20 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   Person.findById(request.params.id).then(person => {
     if(!person) {
-      return result.status(404).end()
+      return response.status(404).end()
     }
 
     person.name = name
     person.number = number
 
     return person.save().then(updatedPerson => {
-      result.json(updatedPerson)
+      response.json(updatedPerson)
     })
   }).catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
-  Person.findByIdAndDelete(request.params.id).then(result => {
+  Person.findByIdAndDelete(request.params.id).then(() => {
     response.status(204).end()
   }).catch(error => next(error))
 })
@@ -118,5 +118,5 @@ app.use(handleErrors)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-    console.log(`Console running on server ${PORT}`)
+  console.log(`Console running on server ${PORT}`)
 })
